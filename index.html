@@ -5,27 +5,41 @@
     <script type="text/javascript" src="cocos2d-js-v3.9-lite.js" charset="UTF-8"></script>
 </head>
 <body>   
-    <canvas id="gameCanvas" width="800" height="450"></canvas>
+    <canvas id="gameCanvas" width="1280" height="720"></canvas>
     <script type="text/javascript">
           window.onload = function(){
               cc.game.onStart = function(){
                   //load resources
                   cc.LoaderScene.preload(["HelloWorld.png"], function () {
-                      var MyScene = cc.Scene.extend({
+                      var MenuScene = cc.Scene.extend({
                           onEnter:function () {
                               this._super();
                               var size = cc.director.getWinSize();
-                              var sprite = cc.Sprite.create("HelloWorld.png");
+							  
+							  var sprite = cc.Sprite.create("HelloWorld.png");
                               sprite.setPosition(size.width / 2, size.height / 2);
                               sprite.setScale(0.8);
                               this.addChild(sprite, 0);
+							  
+							  var menu = new cc.Menu();
+							  menu.setPosition(size.width / 2, size.height / 2);
+							  this.addChild(menu);
 
-                              var label = cc.LabelTTF.create("Hello World", "Arial", 40);
-                              label.setPosition(size.width / 2, size.height / 2);
+							  var playItem = new cc.MenuItemFont("Play Game", function(sender) {
+								cc.log("Play Tapped");
+							  }, this);
+							  playItem.fontSize = 20;
+							  playItem.fontName = "Arial";
+							  menu.addChild(playItem);
+							  
+                              var label = cc.LabelTTF.create("Goodbye World", "Arial", 40);
+                              label.setPosition(size.width / 2, size.height / 3);
                               this.addChild(label, 1);
                           }
                       });
-                      cc.director.runScene(new MyScene());
+					  var GameplayScene=cc.Scene.extend({});
+					  var GameOverScene=cc.Scene.extend({});
+                      cc.director.runScene(new MenuScene());
                   }, this);
               };
               cc.game.run("gameCanvas");
