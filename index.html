@@ -5,7 +5,7 @@
     <script type="text/javascript" src="cocos2d-js-v3.9-lite.js" charset="UTF-8"></script>
 </head>
 <body>   
-    <canvas id="gameCanvas" width="1280" height="720"></canvas>
+    <canvas id="gameCanvas" width="1024" height="768"></canvas>
     <script type="text/javascript">
           window.onload = function(){
               cc.game.onStart = function(){
@@ -27,6 +27,7 @@
 
 							  var playItem = new cc.MenuItemFont("Play Game", function(sender) {
 								cc.log("Play Tapped");
+								cc.director.runScene(new GameplayScene());
 							  }, this);
 							  playItem.fontSize = 20;
 							  playItem.fontName = "Arial";
@@ -37,7 +38,49 @@
                               this.addChild(label, 1);
                           }
                       });
-					  var GameplayScene=cc.Scene.extend({});
+					  var GameplayScene=cc.Scene.extend({
+						score:0,
+						
+						scoreLabel:null,
+						
+						onEnter:function () {
+                              this._super();
+                              var size = cc.director.getWinSize();
+							  
+							  var menu = new cc.Menu();
+							  //menu.setPosition(size.width / 2, size.height / 2);
+							  this.addChild(menu);
+							  
+							  //Die
+							  var dieItem = new cc.MenuItemFont("Die", function(sender) {
+								cc.log("Die Tapped");
+								cc.director.runScene(new GameOverScene());
+							  }, this);
+							  dieItem.color = cc.color(0,0,0);
+							  dieItem.fontSize = 20;
+							  dieItem.fontName = "Arial";
+							  dieItem.setPosition(0, size.height / 3);
+							  menu.addChild(dieItem);
+							  
+							  //Increase the score
+							  var plusItem = new cc.MenuItemFont("Increase Score", function(sender) {
+								cc.log("Plus Tapped");
+								this.score++;
+								this.scoreLabel.setString("Score: " + this.score);
+							  }, this);
+							  plusItem.color = cc.color(155,0,0);
+							  plusItem.fontSize = 20;
+							  plusItem.fontName = "Arial";
+							  plusItem.setPosition(0, size.height / 4);
+							  menu.addChild(plusItem);
+							  
+							  
+                              this.scoreLabel = cc.LabelTTF.create("Score: " + this.score, "Arial", 40);
+                              this.scoreLabel.setPosition(size.width / 2, size.height / 2);
+							  this.scoreLabel.color = cc.color(0,155,0);
+                              this.addChild(this.scoreLabel);
+						}
+					  });
 					  var GameOverScene=cc.Scene.extend({});
                       cc.director.runScene(new MenuScene());
                   }, this);
