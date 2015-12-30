@@ -81,7 +81,38 @@
                               this.addChild(this.scoreLabel);
 						}
 					  });
-					  var GameOverScene=cc.Scene.extend({});
+					var GameOverScene=cc.Scene.extend({
+						onEnter:function () {
+                            this._super();
+                            var size = cc.director.getWinSize();
+							
+							var menu = new cc.Menu();
+							//menu.setPosition(size.width / 2, size.height / 2);
+							this.addChild(menu);
+							
+							//Restart the game
+							var retryItem = new cc.MenuItemFont("Restart Game", function(sender) {
+								cc.log("Retry Tapped");
+								cc.director.runScene(new GameplayScene());
+							}, this);
+							retryItem.color = cc.color(0,155,0);
+							retryItem.fontSize = 20;
+							retryItem.fontName = "Arial";
+							retryItem.setPosition(0, size.height / 3);
+							menu.addChild(retryItem);
+						
+							//Go back to the main menu
+							var quitItem = new cc.MenuItemFont("Quit", function(sender) {
+								cc.log("Quit Tapped");
+								cc.director.runScene(new MenuScene());
+							}, this);
+							quitItem.color = cc.color(155,0,0);
+							quitItem.fontSize = 20;
+							quitItem.fontName = "Arial";
+							quitItem.setPosition(0, size.height / 4);
+							menu.addChild(quitItem);
+						}
+					  });
                       cc.director.runScene(new MenuScene());
                   }, this);
               };
