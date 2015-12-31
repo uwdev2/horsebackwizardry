@@ -111,6 +111,8 @@
 									onMouseUp: function(event){
 										if(event.getButton() == cc.EventMouse.BUTTON_LEFT && cc.rectContainsPoint(orb.getBoundingBox(), event.getLocation())){
 											cc.log("mouseUp");
+											var actionUp = cc.jumpBy(.5, cc.p(0, 0), 80, 1);
+											player.runAction(actionUp);
 										}
 									}
 								 }, orb);
