@@ -54,7 +54,9 @@
 							  //Die
 							  var dieItem = new cc.MenuItemFont("Die", function(sender) {
 								cc.log("Die Tapped");
-								cc.director.runScene(new GameOverScene());
+								var gameOverScene = new GameOverScene();
+								gameOverScene.score = this.score;
+								cc.director.runScene(gameOverScene);
 							  }, this);
 							  dieItem.color = cc.color(0,0,0);
 							  dieItem.fontSize = 20;
@@ -82,8 +84,12 @@
 						}
 					  });
 					var GameOverScene=cc.Scene.extend({
+						
+						score: 0,
+						
 						onEnter:function () {
                             this._super();
+							
                             var size = cc.director.getWinSize();
 							
 							var menu = new cc.Menu();
@@ -111,6 +117,11 @@
 							quitItem.fontName = "Arial";
 							quitItem.setPosition(0, size.height / 4);
 							menu.addChild(quitItem);
+							
+							var scoreLabel = cc.LabelTTF.create("Score: " + this.score, "Arial", 40);
+                            scoreLabel.setPosition(size.width / 2, size.height / 2);
+							scoreLabel.color = cc.color(0,155,0);
+                            this.addChild(scoreLabel);
 						}
 					  });
                       cc.director.runScene(new MenuScene());
