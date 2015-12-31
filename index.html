@@ -76,7 +76,7 @@
 							  
 							  //The Player Node
 							  var player = new cc.Sprite("spr_enemy_0.png");
-							  //player.setContentSize(100,150);
+							  player.setContentSize(32,48);
 							  player.setPosition(size.width / 2, size.height / 5);
 							  //player.setAnchorPoint(cc.p(0.5,0));
 							  //Adding a player to the scene.
@@ -102,6 +102,7 @@
 								 cc.eventManager.addListener({
 									event: cc.EventListener.MOUSE,
 									onMouseMove: function(event){
+										//If the mouse is clicked, and the orb's rectangle contains the mouse movement point
 										if(event.getButton() == cc.EventMouse.BUTTON_LEFT && cc.rectContainsPoint(orb.getBoundingBox(), event.getLocation())){
 											//cc.log(event);
 											//cc.log("Clicked");
@@ -118,7 +119,18 @@
 								 }, orb);
 							  }
 							  
+							  var a = player.y-player.getContentSize().height/2;
+							  cc.log(a);
+							  cc.log(player.getContentSize());
 							  
+							  //The Bad Guys spawning in from the right.
+							  var enemy = new cc.LayerColor(cc.color(0,0,90));
+							  enemy.setContentSize(40,40);
+							  enemy.setPosition(size.width, a);
+							  this.addChild(enemy);
+							  
+							  //Having the enemy come at the player, function takes (time, the point)
+							  enemy.runAction(cc.moveTo(1, cc.p(0, a)));
 							  
 							  //Increase the score
 							  var plusItem = new cc.MenuItemFont("Increase Score", function(sender) {
