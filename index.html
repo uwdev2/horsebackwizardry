@@ -90,15 +90,31 @@
 							  orb.setAnchorPoint(cc.p(.5, .5));
 							  this.addChild(orb);
 							  
-							  cc.eventManager.addListener({
-								event: cc.EventListener.TOUCH_ONE_BY_ONE,
-								swallowTouches: true,
-								onTouchEnded: function (touch, event) {
-									var target = event.getCurrentTarget();
-									cc.log(target);
-									cc.log("Blah");
-								}
-							  }, orb);
+							  //The Swiping/Click handler
+							  if( 'touches' in cc.sys.capabilities ) {
+								cc.eventManager.addListener({
+									event: cc.EventListener.TOUCH_ALL_AT_ONCE,
+									onTouchesMoved: function (touches, event) {
+										cc.log("Touched");
+									}
+								}, orb);
+							  } else if ('mouse' in cc.sys.capabilities ){
+								 cc.eventManager.addListener({
+									event: cc.EventListener.MOUSE,
+									onMouseMove: function(event){
+										if(event.getButton() == cc.EventMouse.BUTTON_LEFT && cc.rectContainsPoint(orb.getBoundingBox(), event.getLocation())){
+											//cc.log(event);
+											//cc.log("Clicked");
+											//cc.log(event.getLocation());
+										}
+									},
+									onMouseUp: function(event){
+										if(event.getButton() == cc.EventMouse.BUTTON_LEFT && cc.rectContainsPoint(orb.getBoundingBox(), event.getLocation())){
+											cc.log("mouseUp");
+										}
+									}
+								 }, orb);
+							  }
 							  
 							  
 							  
