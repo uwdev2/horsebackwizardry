@@ -75,12 +75,13 @@
 							  menu.addChild(dieItem);
 							  
 							  //The Player Node
-							  var player = new cc.LayerColor(cc.color(255, 255, 0, 255));
-							  player.setContentSize(100,150);
+							  var player = new cc.Sprite("spr_enemy_0.png");
+							  //player.setContentSize(100,150);
 							  player.setPosition(size.width / 2, size.height / 5);
 							  //player.setAnchorPoint(cc.p(0.5,0));
 							  //Adding a player to the scene.
 							  this.addChild(player);
+							  
 							  
 							  //The Magical Artifact
 							  var orb = new cc.LayerColor(cc.color(90,90,90));
