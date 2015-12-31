@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hello Cocos2d-JS</title> 
+    <title>Horseback Wizardry</title> 
     <script type="text/javascript" src="cocos2d-js-v3.9-lite.js" charset="UTF-8"></script>
+	<style>
+	body {
+		background-color: blue;
+	}
+	canvas {
+		border: 5px solid red;
+	}
+	</style>
 </head>
 <body>   
-    <canvas id="gameCanvas" width="1024" height="768"></canvas>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
     <script type="text/javascript">
           window.onload = function(){
               cc.game.onStart = function(){
@@ -27,6 +35,8 @@
 
 							  var playItem = new cc.MenuItemFont("Play Game", function(sender) {
 								cc.log("Play Tapped");
+								cc.log("play effect");
+								cc.audioEngine.playEffect("Blip_Select.wav");
 								cc.director.runScene(new GameplayScene());
 							  }, this);
 							  playItem.fontSize = 20;
@@ -64,6 +74,33 @@
 							  dieItem.setPosition(0, size.height / 3);
 							  menu.addChild(dieItem);
 							  
+							  //The Player Node
+							  var player = new cc.LayerColor(cc.color(255, 255, 0, 255));
+							  player.setContentSize(100,150);
+							  player.setPosition(size.width / 2, size.height / 5);
+							  //player.setAnchorPoint(cc.p(0.5,0));
+							  //Adding a player to the scene.
+							  this.addChild(player);
+							  
+							  //The Magical Artifact
+							  var orb = new cc.LayerColor(cc.color(90,90,90));
+							  orb.setContentSize(100,100);
+							  orb.setPosition(size.width / 2, size.height/2);
+							  orb.setAnchorPoint(cc.p(.5, .5));
+							  this.addChild(orb);
+							  
+							  cc.eventManager.addListener({
+								event: cc.EventListener.TOUCH_ONE_BY_ONE,
+								swallowTouches: true,
+								onTouchEnded: function (touch, event) {
+									var target = event.getCurrentTarget();
+									cc.log(target);
+									cc.log("Blah");
+								}
+							  }, orb);
+							  
+							  
+							  
 							  //Increase the score
 							  var plusItem = new cc.MenuItemFont("Increase Score", function(sender) {
 								cc.log("Plus Tapped");
@@ -78,7 +115,7 @@
 							  
 							  
                               this.scoreLabel = cc.LabelTTF.create("Score: " + this.score, "Arial", 40);
-                              this.scoreLabel.setPosition(size.width / 2, size.height / 2);
+                              this.scoreLabel.setPosition(size.width / 2, size.height * .95 );
 							  this.scoreLabel.color = cc.color(0,155,0);
                               this.addChild(this.scoreLabel);
 						}
